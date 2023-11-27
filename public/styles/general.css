@@ -1,0 +1,166 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+*:focus {
+  border: none;
+  outline: none;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat';
+  overflow-x: hidden;
+}
+
+ion-icon {
+  font-size: 4.8rem;
+}
+
+section {
+  margin-bottom: 25rem;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+/* Headings  */
+.heading-primary {
+  font-size: 8.6rem;
+  font-weight: 150;
+  color: #222;
+}
+
+.heading-secondary {
+  font-size: 7.2rem;
+  font-weight: 150;
+  color: #222;
+}
+
+.heading-3 {
+  font-size: 4.2rem;
+  font-weight: 100;
+}
+
+/* Buttons  */
+.btn-fill {
+  background-color: #22b8cf;
+  color: #fff;
+  border-radius: 100px;
+  text-decoration: none;
+  font-size: 2.4rem;
+  padding: 1rem 2.4rem;
+  font-family: inherit;
+  transition: all 0.3s;
+  text-align: center;
+}
+.btn-fill:hover {
+  background-color: #1fa6ba;
+}
+
+.cta {
+  border-radius: 11px;
+}
+
+.btn-outline {
+  background: none;
+  color: #22b8cf;
+  text-decoration: none;
+  font-size: 2.4rem;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  color: #1fa6ba;
+}
+
+/* Logo  */
+.logo-tall {
+  width: 24rem;
+}
+
+.logo {
+  width: 5rem;
+}
+
+/* Flex  */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.g18 {
+  gap: 1.8rem;
+}
+
+.g24 {
+  gap: 2.4rem;
+}
+
+.g1 {
+  gap: 1rem;
+}
+
+.flex-align {
+  align-items: center;
+}
+
+.flex-justify {
+  justify-content: center;
+}
+
+.flex-just-start {
+  justify-content: flex-start;
+}
+
+.flex-just-end {
+  justify-content: flex-end;
+}
+
+/*  */
+.hide {
+  display: none;
+}
+
+/* Input */
+.input {
+  font-family: inherit;
+  font-size: 1.6rem;
+  border: 1px solid rgba(119, 119, 119, 0.267);
+  outline: none;
+  padding: 0.8rem 1.8rem;
+  background-color: #fff;
+  border-radius: 6px;
+  transition: 0.1s;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.input:focus {
+  border-width: 2px;
+}
+
+.input-div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.label {
+  font-size: 2rem;
+  font-weight: 300;
+}
