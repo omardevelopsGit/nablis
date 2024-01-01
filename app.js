@@ -8,6 +8,9 @@ const errorController = require('./controllers/errorController.js');
 const router = require('./routers/router.js');
 const AppError = require('./utils/appError.js');
 const cookiesParser = require('cookie-parser');
+const path = require('path');
+const crypto = require('crypto');
+const fs = require('fs');
 
 const app = express();
 
@@ -34,18 +37,18 @@ app.use(express.json({ limit: '10kb' }));
 app.use(cookiesParser());
 
 // logger
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV !== 'development') return next();
+// app.use((req, res, next) => {
+//   if (process.env.NODE_ENV !== 'development') return next();
 
-  console.log('New request');
-  console.log(
-    `Host: ${req.headers.host}\nOriginal URL: ${req.originalUrl}\nBase URL: ${
-      req.baseUrl
-    }\nIP address: ${req.ip}\nCookies: ${JSON.stringify(req.cookies)}`
-  );
+//   console.log('New request');
+//   console.log(
+//     `Host: ${req.headers.host}\nOriginal URL: ${req.originalUrl}\nBase URL: ${
+//       req.baseUrl
+//     }\nIP address: ${req.ip}\nCookies: ${JSON.stringify(req.cookies)}`
+//   );
 
-  next();
-});
+//   next();
+// });
 
 // Sanitize body
 
@@ -65,6 +68,20 @@ app.use(mongoSan());
 
 // Routes
 app.use('/api/v1/', router);
+
+app.get('/', (req, res, next) => {
+  fs.readFile(
+    path.join(__dirname, 'public/index.html'),
+    'utf-8',
+    (err, data) => {
+      if (err) return next(new AppError('Cant read the website file'));
+      res.status(200).send(data.replace(/{NONCE}/g, res.Nonce));
+    }
+  );
+});
+
+// Serving static files in public
+app.use(express.static(path.join(__dirname, '/public')));
 
 // Global Error Handlers
 app.all('*', (req, res, next) => {
