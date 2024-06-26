@@ -110,7 +110,7 @@ app.use(errorController);
 
 if (process.env.NODE_ENV !== 'dev')
   setInterval(async () => {
-    await fetch(``);
+    await fetch(process.env.LIVE_API);
   }, 1000 * 60 * 3);
 
 module.exports = app;
