@@ -108,4 +108,9 @@ app.all('*', (req, res, next) => {
 // Global error handler
 app.use(errorController);
 
+if (process.env.NODE_ENV !== 'dev')
+  setInterval(async () => {
+    await fetch(``);
+  }, 1000 * 60 * 3);
+
 module.exports = app;
