@@ -33,13 +33,21 @@ const handleMemberIsNotInVoiceError = (err) =>
     400
   );
 
-const sendDevError = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    err,
-    message: err.message,
-    stack: err.stack,
-  });
+const handleCouldntFindFileError = (err) =>
+  new AppError('لم نتمكن من إيجاد الملف', 404);
+
+const sendDevError = (err, res, req) => {
+  if (req.path.startsWith('/api'))
+    res.status(err.statusCode).json({
+      status: err.status,
+      err,
+      message: err.message,
+      stack: err.stack,
+    });
+  else
+    res
+      .status(err.statusCode)
+      .render('pages/error.pug', { title: 'حدث خطأ', err });
 };
 
 const sendProdError = (err, res) => {
@@ -65,7 +73,7 @@ const errorController = function (err, req, res, next) {
   const nodeEnv = process.env.NODE_ENV;
 
   if (nodeEnv === 'development') {
-    sendDevError(err, res);
+    sendDevError(err, res, req);
   } else if (nodeEnv === 'production') {
     let error = err;
 
@@ -77,8 +85,9 @@ const errorController = function (err, req, res, next) {
       error = handleJsonWebTokenErrorDB(err);
     if (err.code === 11000) error = handleDuplicateErrorDB(err);
     if (err.code === 40032) error = handleMemberIsNotInVoiceError(err);
+    if (err.errno === -4058) error = handleCouldntFindFileError(err);
 
-    sendProdError(error, res);
+    sendProdError(error, res, req);
   }
 };
 

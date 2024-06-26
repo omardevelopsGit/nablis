@@ -1,0 +1,18 @@
+.S-error {
+  padding: 2.4rem 4.8rem;
+}
+
+.error-headings {
+  display: flex;
+  gap: 4.8rem;
+  align-items: center;
+}
+
+.error-status-code {
+  color: rgb(170, 46, 1);
+  font-size: 7.2rem;
+}
+
+.error-msg {
+  font-size: 2.4rem;
+}

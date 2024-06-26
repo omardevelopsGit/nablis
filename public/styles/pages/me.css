@@ -1,0 +1,470 @@
+/* Line */
+.quran-line {
+  background-color: #fff;
+  /* padding: 0.8rem 0; */
+  border-radius: 11px;
+  width: 100% !important;
+}
+
+.quran-line-percentage {
+  background-color: #6273cc;
+  padding: 0.4rem 0;
+  border-radius: 11px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.account-info-main {
+  display: flex;
+  gap: 4.8rem;
+}
+
+.S-account-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin-bottom: 0;
+}
+
+.account-quran-percentage {
+  background-color: rgba(32, 201, 151, 78%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  padding: 1.8rem 2.4rem;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.07);
+  transition: all 300ms;
+}
+.account-quran-percentage * {
+  color: #fff;
+}
+.account-quran-percentage:hover {
+  transform: translateY(2%);
+  box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ami */
+.ami {
+  background-color: #fff;
+  border: 0.5px solid rgba(32, 201, 151, 78%);
+  padding: 2.4rem 4.8rem;
+  border-radius: 2px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.ami-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ami-content li {
+  font-size: 1.8rem;
+}
+
+.ami-headings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ami-headings-name {
+  font-size: 4.8rem;
+}
+
+.ami-headings-username {
+  font-size: 1.8rem;
+}
+
+.account-quran-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+/* Wirds management */
+.S-wirds-manage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+}
+
+.wirds-manager {
+  background-color: rgba(32, 201, 151, 78%);
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  padding: 2.4rem 4.8rem;
+  border-radius: 7px;
+  width: 90%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.wirds-manager * {
+  color: #fff;
+}
+
+.wirds-manager-forms {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 2.4rem 3.2rem;
+  transition: all 300ms;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+}
+.wirds-manager-forms:hover {
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+}
+.wirds-manager-forms * {
+  color: #000;
+}
+.wirds-manager-forms form {
+  padding: 0 3.2rem;
+  border-left: 2px solid #aaa;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.delete-wird {
+  border-left: none !important;
+}
+
+/* Wirds show */
+.wirds-show {
+  background-color: #fff;
+  border: 2px solid #20c997;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 2.4rem 0;
+  width: 30%;
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.wirds-show:hover {
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+}
+.wirds-show .heading-secondary {
+  padding: 0 4.8rem;
+}
+
+.wirds-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+
+  overflow: auto;
+  height: 25rem;
+}
+
+.wird-list-item-anchor {
+  padding: 1.8rem 2.4rem;
+  /* border-bottom: 0.2px solid #000; */
+  border-top: 0.2px solid #000;
+  cursor: pointer;
+  font-size: 2.4rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wird-list-item-anchor .wird-name {
+  color: #000;
+}
+
+/* Hifz Management */
+.S-hifz-management {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  /* justify-items: center; */
+  border-bottom: 2px solid rgba(32, 201, 151, 78%);
+  border-top: 2px solid rgba(32, 201, 151, 78%);
+  position: relative;
+
+  width: 100%;
+}
+
+.haf,
+.hms {
+  padding: 2.4rem 6.4rem;
+  height: 100%;
+  transition: all 300ms;
+  background-color: #fff;
+}
+
+.haf {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  border-left: 1px solid rgba(32, 201, 151, 78%);
+}
+
+.haf:hover,
+.hms:hover {
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(32, 201, 151, 78%);
+  transform: translateX(-15%) scale(1.1);
+  width: 150%;
+}
+.hms:hover {
+  transform: translateX(50%) scale(1.1);
+}
+
+.haf .haf-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hms {
+  border-right: 1px solid rgba(32, 201, 151, 78%);
+}
+
+.hms-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow: auto;
+  height: 20rem;
+}
+
+.hms-main-surah {
+  display: flex;
+  justify-content: space-between;
+
+  border: 0.5px solid rgba(32, 201, 151, 78%);
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  color: #000;
+  cursor: pointer;
+}
+
+/* Mohaffiz */
+.S-mohaffiz {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  align-items: flex-start;
+
+  padding: 0 2.4rem;
+}
+
+.mvf {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+
+  width: 40%;
+  border: 2px solid rgba(32, 201, 151, 78%);
+  padding: 2.4rem 4.8rem;
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  transition: all 300ms;
+}
+.mvf:hover {
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+}
+
+.mvf-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Worker */
+.S-worker {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  padding: 0 2.4rem;
+}
+
+.worker-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+
+  padding: 0 6.4rem;
+}
+
+.wtl-head {
+  padding: 2.4rem 4.8rem;
+}
+
+.wtl-container {
+  border: 2px solid rgba(32, 201, 151, 78%);
+  padding: 2.4rem 0;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  width: 30%;
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.wtl-container:hover {
+  transform: scale(0.98);
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+}
+
+.wtl {
+  list-style: none;
+  overflow: auto;
+  height: 25rem;
+}
+
+.wtl-item {
+  border-top: 1px solid rgba(32, 201, 151, 78%);
+  border-bottom: 1px solid rgba(32, 201, 151, 78%);
+  padding: 1.8rem 2.4rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.wtl-item-head {
+  font-size: 1.8rem;
+}
+
+.wtl-item-status {
+  font-size: 1.8rem;
+  color: rgb(24, 155, 116);
+}
+
+.wtl-item-description {
+  font-size: 1.4rem;
+}
+
+.watwf {
+  width: 40%;
+  background-color: rgba(32, 201, 151, 10%);
+  padding: 2.4rem;
+  border-radius: 7px;
+  /* box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2); */
+
+  display: flex;
+  align-items: stretch;
+}
+
+.watwf-main {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  padding: 2.4rem 4.8rem;
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  justify-content: center;
+}
+.watwf-main:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.1);
+}
+
+.watwf form {
+  width: 100%;
+}
+
+.watwf form .input,
+.watwf form button {
+  width: 30%;
+}
+
+/* Admin Panel */
+.S-admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10rem;
+}
+
+.admin-main {
+  background-color: #20c997;
+  padding: 2.4rem 4.8rem;
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  width: 95%;
+}
+
+.admin-main h2 {
+  color: #fff;
+}
+
+.acp {
+  /* background-color: #fff; */
+  /* border-radius: 7px; */
+  /* box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2); */
+  /* padding: 2.4rem 4.8rem; */
+
+  gap: 2.4rem;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr;
+}
+
+.acp form {
+  width: 100%;
+  padding: 1rem 1.8rem;
+  background-color: rgba(255, 255, 255, 0.937);
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.acp form:hover {
+  z-index: 100;
+}
+
+.delete-task-form {
+  grid-column: -1 / 1;
+}
+
+.create-task-form:hover {
+  transform: translate(-20%, 20%) scale(1.2);
+}
+
+.edit-task-form:hover {
+  transform: translate(20%, 20%) scale(1.2);
+}
+
+.delete-task-form:hover {
+  transform: translateY(-28%) scale(1.1);
+}
+
+/* وما كان منتصرا هنالك الولاية لله الحق */

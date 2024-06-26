@@ -1,0 +1,24 @@
+extends ../base
+
+block content 
+    link(rel="stylesheet", href="/styles/pages/signup.css")
+    script(src="/script/signup.js" defer) 
+    section.S-signup 
+        .signup-headings 
+            h1.heading-primary إنشاء حساب جديد
+            h6.signup-second-head أهلًا بك
+        form.signup-form
+            .signup-inputs
+                .input-div
+                    label.label(for="name-input") الإسم
+                    input.input(name="name" id="name-input")
+                .input-div
+                    label.label(for="username-input") إسم المستخدم
+                    input.input(name="username" id="username-input")
+                .input-div
+                    label.label(for="password-input") كلمة السر
+                    input.input(name="password" id="password-input" type="password")
+                .input-div
+                    label.label(for="password-confirm-input") تأكيد كلمة السر
+                    input.input(name="passwordConfirm" id="password-confirm-input" type="password")
+            button.signup-btn.btn-fill(type="submit") إنشاء حساب

@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Alsamt';
+  src: url('../fonts/alsamt.ttf');
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -11,11 +16,13 @@
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  direction: rtl;
 }
 
 body {
-  font-family: 'Montserrat';
-  overflow-x: hidden;
+  font-family: 'Cairo', sans-serif;
+
+  border-radius: 11px;
 }
 
 ion-icon {
@@ -34,7 +41,7 @@ button {
 /* Headings  */
 .heading-primary {
   font-size: 8.6rem;
-  font-weight: 150;
+  font-weight: 500;
   color: #222;
 }
 
@@ -46,23 +53,26 @@ button {
 
 .heading-3 {
   font-size: 4.2rem;
-  font-weight: 100;
+  font-weight: 350;
+  color: #000;
 }
 
 /* Buttons  */
 .btn-fill {
-  background-color: #22b8cf;
-  color: #fff;
-  border-radius: 100px;
+  background-color: rgba(32, 201, 151, 78%);
+  color: #fff !important;
+  border-radius: 11px;
   text-decoration: none;
-  font-size: 2.4rem;
-  padding: 1rem 2.4rem;
+  font-size: 2.2rem;
+  padding: 0.6rem 1.8rem;
   font-family: inherit;
   transition: all 0.3s;
   text-align: center;
+  display: block;
+  box-shadow: 5px 5px 16px 3px rgba(0, 0, 0, 0.2);
 }
 .btn-fill:hover {
-  background-color: #1fa6ba;
+  background-color: rgba(32, 201, 151, 1);
 }
 
 .cta {
@@ -71,14 +81,14 @@ button {
 
 .btn-outline {
   background: none;
-  color: #22b8cf;
+  color: rgba(32, 201, 151, 78%);
   text-decoration: none;
   font-size: 2.4rem;
   font-family: inherit;
   transition: all 0.3s;
 }
 .btn-outline:hover {
-  color: #1fa6ba;
+  color: rgba(32, 201, 151, 1);
 }
 
 /* Logo  */
@@ -127,6 +137,10 @@ button {
   justify-content: flex-end;
 }
 
+.flex-just-sb {
+  justify-content: space-between;
+}
+
 /*  */
 .hide {
   display: none;
@@ -135,13 +149,12 @@ button {
 /* Input */
 .input {
   font-family: inherit;
-  font-size: 1.6rem;
-  border: 1px solid rgba(119, 119, 119, 0.267);
-  outline: none;
-  padding: 0.8rem 1.8rem;
-  background-color: #fff;
-  border-radius: 6px;
-  transition: 0.1s;
+  background-color: rgba(150, 150, 150, 2%);
+  border: none;
+  padding: 1rem 1.8rem;
+  border-radius: 500px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.1);
+  transition: all 300ms;
 }
 
 .input-container {
@@ -151,7 +164,9 @@ button {
 }
 
 .input:focus {
-  border-width: 2px;
+  background-color: #fff;
+  transform: translateY(2%);
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
 }
 
 .input-div {
@@ -160,7 +175,183 @@ button {
   gap: 0.8rem;
 }
 
+.non-input {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  padding-left: 1.8rem;
+}
+
 .label {
   font-size: 2rem;
   font-weight: 300;
+}
+
+/* English Label */
+.english-family {
+  font-family: 'Overlock SC', sans-serif !important;
+}
+
+/* Arabic Label */
+.alsamt-family {
+  font-family: 'Alsamt', sans-serif !important;
+}
+
+/* Completion */
+.completion-range-scale-container {
+  background-color: #fff;
+  /* padding: 0.8rem 0; */
+  border-radius: 11px;
+  width: 100%;
+}
+
+.completion-range-scale-done {
+  background-color: #6273cc;
+  padding: 0.4rem 0;
+  border-radius: 11px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.completion-percentage-range {
+  background-color: rgba(32, 201, 151, 78%);
+  padding: 2.4rem 4.8rem;
+  border-radius: 11px;
+  box-shadow: 0 0 16px 5px rgba(0, 0, 0, 0.2);
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.completion-percentage-range:hover {
+  transform: translateY(2%);
+  box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.2);
+}
+
+.completion-percentage-range * {
+  color: #fff;
+}
+
+.completion-percentage-text {
+  font-size: 1.8rem;
+}
+
+.completion-percentage-range-head {
+  font-size: 3.2rem;
+}
+
+/* Footer */
+.S-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 0;
+  padding: 4.8rem;
+  background-color: rgba(32, 201, 151, 0.78);
+}
+
+.S-footer * {
+  color: #fff;
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr;
+}
+
+.footer-section {
+  padding: 1.8rem 2.4rem;
+  border-left: 5px solid rgba(255, 255, 255, 0.5);
+  border-right: 5px solid rgba(255, 255, 255, 0.5);
+}
+
+.location-footer-section-list {
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.location-footer-section-li a {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 0.4rem;
+
+  font-size: 1.8rem;
+}
+
+.location-footer-section-li a ion-icon {
+  font-size: 2.4rem;
+}
+
+.dev-footer-section-text {
+  font-size: 1.8rem;
+}
+
+.about-footer-section-text {
+  font-size: 1.4rem;
+}
+
+/* Header */
+.main-nav-head {
+  font-size: 2.8rem;
+}
+
+.main-nav {
+  position: fixed;
+  width: 95%;
+  right: 50%;
+  transform: translateX(50%);
+  border-radius: 5px;
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: 0 0 25px 8px rgba(0, 0, 0, 0.2);
+  bottom: 2rem;
+  transition: all 300ms;
+
+  display: flex;
+  gap: 3.2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-nav-btn {
+  font-size: 1.8rem;
+}
+
+.main-nav-hidden {
+  transform: translateX(50%) translateY(200%);
+}
+
+/* Error box */
+.main-dialog-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+
+  background-color: #fff;
+  padding: 2.4rem 4.8rem;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+  width: 50%;
+}
+
+.main-dialog-head {
+  font-size: 3.2rem;
+}
+
+.main-dialog-message {
+  font-size: 1.8rem;
 }

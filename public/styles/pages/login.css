@@ -1,0 +1,48 @@
+.S-login {
+  min-height: 100vh;
+  width: 100%;
+  margin-bottom: 5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6.4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  width: 30%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  align-items: center;
+}
+
+.login-inputs {
+  border: 1px solid rgba(32, 201, 151, 78%);
+  border-radius: 5px;
+  padding: 3.2rem 6.4rem;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.login-second-head {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #888;
+}
+
+.login-headings .heading-primary {
+  font-weight: 150;
+}
+
+.login-headings {
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+}

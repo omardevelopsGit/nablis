@@ -1,0 +1,18 @@
+extends ../base
+
+block content 
+    link(rel="stylesheet", href="/styles/pages/login.css")
+    script(src="/script/login.js" defer) 
+    section.S-login 
+        .login-headings 
+            h1.heading-primary تسجيل الدخول
+            h6.login-second-head أهلًا بك من جديد
+        form.login-form
+            .login-inputs
+                .input-div
+                    label.label(for="username-input") إسم المستخدم
+                    input.input(name="username" id="username-input")
+                .input-div
+                    label.label(for="password-input") كلمة السر
+                    input.input(name="password" id="password-input" type="password")
+            button.login-btn.btn-fill(type="submit") تسجيل الدخول

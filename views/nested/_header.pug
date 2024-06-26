@@ -1,0 +1,11 @@
+nav.main-nav 
+    if !user 
+        a.btn-fill.main-nav-btn(href="/signup") إنشاء حساب
+    else
+        a.btn-fill.main-nav-btn(href="/me") حسابي
+    p.main-nav-head.alsamt-family 
+        a.btn-outline(href="/") مسجد نابلس الكبير
+    if !user 
+        a.btn-fill.main-nav-btn(href="/login") تسجيل دخول
+    else
+        a.btn-fill.main-nav-btn#main-nav-logout-button(href="#") تسجيل خروج

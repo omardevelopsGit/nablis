@@ -1,0 +1,9 @@
+extends ../base
+
+block content
+    link(rel="stylesheet", href="/styles/pages/error.css")
+    section.S-error
+        .error-headings
+            h1.heading-primary.error-head حدث خطأ
+            p.error-status-code= err.statusCode
+        p.error-msg= err.message

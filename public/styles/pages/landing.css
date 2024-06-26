@@ -1,0 +1,180 @@
+/* Hero Section */
+.S-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/img/landing-bg.jpg');
+  background-size: cover;
+
+  height: 100vh;
+  box-shadow: 0 0 16px 10px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-headings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* box-shadow: 0 0 100px 20px rgba(0, 0, 0, 0.5); */
+  border-radius: 7px;
+  padding: 2.4rem 4.8rem;
+}
+
+.hero-headings .heading-3 {
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.hero-headings .heading-primary {
+  color: #fff;
+}
+
+/* Website functions */
+
+.S-website-functions {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  align-items: center;
+
+  padding: 0 8.2rem;
+}
+
+.website-functions-main {
+  display: flex;
+  align-items: center;
+  gap: 4.8rem;
+  justify-content: center;
+
+  padding: 2.4rem 8.2rem;
+}
+
+.site-fn-quran-logo {
+  width: 100%;
+}
+
+.site-fn-container {
+  width: 50%;
+  background-color: rgba(32, 201, 151, 70%);
+  padding: 3.2rem 4.8rem;
+  border-radius: 11px;
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.07);
+  transition: all 300ms;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.site-fn-container:hover {
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.07);
+  transform: translateY(2%);
+}
+
+.site-fn-head {
+  font-size: 4.8rem;
+  font-weight: 150;
+}
+
+.site-fn-text {
+  font-size: 2.4rem;
+}
+
+.site-fn-container * {
+  color: #fff;
+}
+
+/* Cta Section */
+.cta-section-logged-out {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+}
+
+.cta-section-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4.8rem;
+}
+
+.cta-section-wird,
+.cta-section-hifz {
+  padding: 4.8rem 6.8rem;
+  width: 40%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.cta-section-wird {
+  border-left: 2px solid #000;
+}
+
+.cta-section-text {
+  font-size: 2.4rem;
+}
+
+.cta-section-logged-in-main {
+  padding: 0 6.2rem;
+  width: 100%;
+
+  display: grid;
+  column-gap: 4.8rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.cta-section-logged-in {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* About Us Section */
+.S-about-us {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-us-main {
+  background-color: rgba(32, 201, 151, 0.78);
+  padding: 2.4rem 4.8rem;
+  padding-right: 0;
+  border-radius: 5px;
+  width: 80%;
+  box-shadow: 0 0 16px 5px rgba(0, 0, 0, 0.2);
+
+  display: grid;
+  column-gap: 6.4rem;
+  grid-template-columns: 1fr 4fr;
+}
+
+.about-us-main-img {
+  width: 100%;
+  border-radius: 5px;
+  transform: scale(1.4);
+  box-shadow: 0 0 16px 5px rgba(0, 0, 0, 0.2);
+  border: 20px solid rgba(255, 255, 255, 0.2);
+  transition: all 300ms;
+}
+.about-us-main-img:hover {
+  transform: scale(1.4) translateY(-2%);
+}
+
+.about-us-text {
+  font-size: 2.4rem;
+}
+
+.about-us-main * {
+  color: #fff;
+}

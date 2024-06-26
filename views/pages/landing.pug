@@ -1,0 +1,62 @@
+extends ../base 
+
+block content 
+    link(rel="stylesheet", href="/styles/pages/landing.css")
+    section.S-hero#section-hero 
+        header.hero-headings
+            h1.heading-primary مــسـجد نــابـلـس الكــبـيــر
+            h3.heading-3.english-family Nablis Grand Mosque
+    
+    section.S-website-functions
+        h2.heading-secondary ما فائدة هذا الموقع؟
+        main.website-functions-main
+            .site-fn-container 
+                h4.site-fn-head متابعة حفظ
+                p.site-fn-text أداه تتابع حفظك لسور القرآن الكريم، ويمكنك متابعتها مع محفظين من الجامع إن اكنت تريد فائدة لإبنك، فيمكنك متابعة حفظه بسهوله
+
+            .site-fn-quran-logo-container 
+                img.site-fn-quran-logo(src="/img/quran.png", alt="مسجد نابلس الكبير صورة القرآن أداة حفظ القران ومتابعة الورد")
+
+            .site-fn-container 
+                h4.site-fn-head متابعة الورد
+                p.site-fn-text أداه تسهل متابعة ورد القرآن المتقطع، أي أن هذا المكان هو الذي تحفظ فيه وردك اذا كنت تقرأ من أكثر من مكان لكي لا تنسى
+
+    section.S-cta 
+        if !user 
+            .cta-section-logged-out
+                h2.heading-secondary إبدأ معنا الآن
+                main.cta-section-main 
+                    .cta-section-wird 
+                        h3.heading-3 وردك الجديد
+                        p.cta-section-wird-text.cta-section-text تابع قرائتك للقرآن الكريم معنا بكل سهوله بمكان موحد!
+                        a.btn-fill(href="/signup") إنشاء حساب
+                    .cta-section-hifz 
+                        h3.heading-3 إبدأ حفظك
+                        p.cta-section-hifz-text.cta-section-text تابع حفظك للمصحف الشريف بشكل حديث و مسهل
+                        a.btn-fill(href="/signup") إنشاء حساب
+        else 
+            main.cta-section-logged-in 
+                h2.heading-secondary إنجازك
+                main.cta-section-logged-in-main
+                    .completion-percentage-range#wird-completion-percentage
+                        h3.heading-3.completion-percentage-range-head نسبة الختم من آخر ورد
+                        - const percentage = ((user?.wirds[0]?.page / 604) *100)?.toFixed(3) | 0;
+                        div
+                            .completion-range-scale-container 
+                                .completion-range-scale-done(value=`${percentage}`)
+                            p.completion-percentage-text لقد ختمت #{percentage}% من القرآن الكريم
+
+                    .completion-percentage-range#hifz-completion-percentage
+                        h3.heading-3.completion-percentage-range-head نسبة حفظك للقران الكريم
+                        - const hifzPercentage = (user.hifzProgress.map(surah => surah.verses).flat().length / 100).toFixed(3)
+                        div
+                            .completion-range-scale-container 
+                                .completion-range-scale-done(value=`${hifzPercentage}`)
+                            p.completion-percentage-text لقد حفظت #{hifzPercentage}% من القرآن الكريم
+                    
+    section.S-about-us 
+        main.about-us-main 
+            img.about-us-main-img(src="/img/about-us-img.jpg")
+            .about-us-main-text
+                h2.heading-secondary مسجد نابلس الكبــيــر
+                p.about-us-text مسجد نابلس الكبير هو مسجد يقع في عمان، الأردن في منطقة الياسمين. وهذا الموقع مسجل باسمه، ويخدم هذا الموقع بعض مصالح المسجد، وهذا الموقع يعد عمل تطوعي، وليس ربحي

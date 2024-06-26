@@ -5,27 +5,55 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 const mongoSan = require('express-mongo-sanitize');
 const errorController = require('./controllers/errorController.js');
-const router = require('./routers/router.js');
+const userRouter = require('./routers/userRouter.js');
 const AppError = require('./utils/appError.js');
 const cookiesParser = require('cookie-parser');
 const path = require('path');
 const crypto = require('crypto');
-const fs = require('fs');
+const wirdRouter = require('./routers/wirdRouter.js');
+const tasksRouter = require('./routers/tasksRouter.js');
+const viewsRouter = require('./routers/viewsRouter.js');
+const pugRouter = require('./routers/pugRouter.js');
+const authController = require('./controllers/authController.js');
+const xss = require('xss-clean');
 
 const app = express();
 
+// View Engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // Middlewares & Security
 // Helmet
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'", 'js.stripe.com'],
+        scriptSrc: [
+          "'self'",
+          'unpkg.com',
+          'cdn.jsdelivr.net',
+          '*.squarecdn.com',
+          'js.squareupsandbox.com',
+        ],
+        scriptSrcElem: ['unpkg.com', "'self'"],
+        connectSrc: ["'self'", 'unpkg.com', 'pci-connect.squareupsandbox.com'],
+        imgSrc: ["'self'", 'unpkg.com'],
+        // Add other directives as needed
+      },
+    },
+  })
+);
 
 // Rate limit
 const limiter = rateLimit({
-  max: 100,
+  max: 150,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests',
 });
 
-app.use(limiter);
+app.use('/api/v1', limiter);
 
 // Parameter pollution exception
 app.use(hpp());
@@ -53,39 +81,28 @@ app.use(cookiesParser());
 // Sanitize body
 
 // Xss attacks
-app.use((req, res, next) => {
-  const nonce = crypto.randomBytes(64).toString('hex');
-  const header = `default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'nonce-${nonce}';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests`;
-
-  res.set('Content-Security-Policy', header);
-
-  res.Nonce = nonce;
-  next();
-});
+app.use(xss());
 
 // NoSQL query injection
 app.use(mongoSan());
 
 // Routes
-app.use('/api/v1/', router);
-
-app.get('/', (req, res, next) => {
-  fs.readFile(
-    path.join(__dirname, 'public/index.html'),
-    'utf-8',
-    (err, data) => {
-      if (err) return next(new AppError('Cant read the website file'));
-      res.status(200).send(data.replace(/{NONCE}/g, res.Nonce));
-    }
-  );
-});
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/wirds', authController.protect, wirdRouter);
+app.use('/api/v1/tasks', authController.protect, tasksRouter);
+app.use('/api/v1/pugify', pugRouter);
 
 // Serving static files in public
 app.use(express.static(path.join(__dirname, '/public')));
 
+// Views
+app.use('/', authController.optionalProtect, viewsRouter);
+
 // Global Error Handlers
 app.all('*', (req, res, next) => {
-  next(new AppError('This route is not defined on this server', 404));
+  next(
+    new AppError('هذا الراوت غير موجود بالسيرفر، تم إعطائك رابط خاطئ.', 404)
+  );
 });
 
 // Global error handler
