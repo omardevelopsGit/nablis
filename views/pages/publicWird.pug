@@ -1,0 +1,57 @@
+extends ../base 
+
+block content 
+    link(rel="stylesheet", href="/styles/pages/publicWird.css")
+    script(src="/script/publicWird.js" defer) 
+    data(wird=`${JSON.stringify(wird)}`)
+    section.wird-main-info
+        figure.S-basic-info.wird-main-info-piece
+            h3.heading-3 هدف اليوم
+            main.basic-info-dailyGoal 
+                - const todayGoal = Math.floor(((new Date() - wird.createdAt) / (1000 * 60 * 60 * 24)) +1) * wird.dailyProgress
+                p.dailyGoal-text= todayGoal
+            // BID = Basic Info Description
+            figure.bid
+                h3.heading-3.bid-head الوصف
+                p.bid-text= wird.description 
+
+        figure.S-complex-info.wird-main-info-piece 
+            header.complex-info-headings
+                h2.heading-secondary.wird-name= wird.name
+            // CIG = Complex Info General
+            section.cig
+                figure.cig-figure
+                    p.cig-figure-text #{wird.subscribers.length} مشترك
+                figure.cig-figure
+                    p.cig-figure-text #{wird.closedNewMembers ? 'لا' : ''} يستقبل أعضاء جدد
+                figure.cig-figure
+                    p.cig-figure-text #{wird.dailyProgress} صفحه باليوم
+                if wird.maxMembers > 0 
+                    figure.cig-figure
+                        p.cig-figure-text يتسع إلى #{wird.maxMembers} شخص
+            // Complex Info Subscribers Table
+            section.cist
+                h2.heading-3 المشتركين
+                // ST = Subscribers Table
+                main.st 
+                    .st-headings 
+                        p.st-head.st-headings-border-left الإسم
+                        p.st-head الختمه
+                    .st-body 
+                        each sub in [wird.subscribers.find(sub => sub.user._id.toString() === user._id.toString()),...wird.subscribers.filter(sub => sub.user._id.toString() !== user._id.toString()).slice(0, 2)]
+                            .st-element 
+                                .st-el-text= sub.user.name
+                                .st-el-text صفـ#{sub.progress.page}ـحه آيـ#{sub.progress.verse}ـه
+                    
+    // WAP = Wird Administration Panel
+    section.wap
+        h3.heading-3 إضافة إلى حفظك للورد
+        form.wap-add-to-wird-form
+            .flex.g18
+                .input-div 
+                    label.label الصفحه
+                    input.input(placeholder="201" name="page")
+                .input-div 
+                    label.label آيه
+                    input.input(placeholder="3" name="verse")
+            button.btn-fill(type="submit") إضافه

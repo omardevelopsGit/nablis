@@ -225,3 +225,20 @@ exports.logout = (req, res, next) => {
 
   res.status(204).end();
 };
+
+exports.addRoles = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ username: req.params.username });
+
+  if (!user) return next(new AppError('هذا المستخدم غير موجود', 404));
+
+  const roles = new Set([...req.body.roles, ...user.roles]);
+  user.roles = Array.from(roles);
+  await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});

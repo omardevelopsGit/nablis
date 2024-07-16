@@ -1,0 +1,23 @@
+each wird in wirds 
+    figure.wird-card 
+        .wird-card-border
+            button.btn-fill__2.join-publicWird-btn(wird-un=`${wird.uniqueName}`, wird-id=`${wird._id}`) إنضـــمــام!
+            a.btn-fill.cta(href=`/wirds/public/${wird._id}`) الذهاب للورد &larr;
+        .wird-card-headings
+            .wird-card-toDay-progress
+                - const todayGoal = Math.floor(((new Date() - wird.createdAt) / (1000 * 60 * 60 * 24)) +1) * wird.dailyProgress
+                p.dailyGoal-text= todayGoal
+            p وصل الورد إلى هذه الصفحه
+            // WIL = Wird Info List
+            p.wird-card-name= wird.name
+        ul.wil
+            li.wil-li 
+                ion-icon(name="people-outline") 
+                | #{wird.subscribers.length}
+            li.wil-li 
+                ion-icon(name="id-card-outline") 
+                | #{wird.uniqueName}
+            li.wil-li 
+                ion-icon(name="calendar-outline") 
+                | #{Intl.DateTimeFormat('ar-JO').format(wird.createdAt)}
+        p إضغط أو ضع الفاره فوق الورد للإنضمام

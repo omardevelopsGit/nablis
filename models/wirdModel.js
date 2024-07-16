@@ -31,7 +31,6 @@ const wirdSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    unique: true,
     required: [true, 'Please provide wird name'],
   },
   user: {

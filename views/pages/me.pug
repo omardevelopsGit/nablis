@@ -3,6 +3,7 @@ extends ../base
 block content   
     link(rel="stylesheet", href="/styles/pages/me.css")
     script(src="/script/me.js" defer)
+    data(surahs=`${JSON.stringify(surahs)}`, user=`${JSON.stringify(user)}`)
     section.S-account-info
         h3.heading-3.account-info-head
         main.account-info-main
@@ -11,7 +12,7 @@ block content
                     p.ami-headings-name.english-family= user.name 
                     p.ami-headings-username.english-family= user.username 
                 ul.ami-content
-                    li.ami-content-li الرتبه: #{user.roles.reduce((acc, curr, i) => i === 1 ? acc = curr : acc = `${acc}, ${curr}`,"")}
+                    li.ami-content-li الرتبه: #{user.roles.reduce((acc, curr, i) => acc = `${acc}, ${curr}`, '')}
                     li.ami-content-li عدد الورود: #{user.wirds.length}
                     li.ami-content-li عدد السور المحفوظ منها: #{user.hifzProgress.length}
                     li.ami-content-li تم إنشاء الحساب في: #{Intl.DateTimeFormat('ar-JO').format(user.createdAt)}
@@ -56,10 +57,10 @@ block content
                     .flex.g18
                         .input-div
                             label.label(for="wird-page") رقم الصفحه
-                            input.input#edit-wird-pn-in(type="number", placeholder="345", name="page" required)
+                            input.input#edit-wird-pn-in(type="number", placeholder="345", name="page" value=`${user.wirds.at(0) ? user.wirds.at(0).page : ''}` required)
                         .input-div
                             label.label(for="wird-verse") رقم الآيه  
-                            input.input#edit-wird-vn-in(type="number", placeholder="3", name="verse" required)
+                            input.input#edit-wird-vn-in(type="number", placeholder="3", name="verse" value=`${user.wirds.at(0) ? user.wirds.at(0).verse : ''}` required)
                     button.btn-fill(type="submit") تحديث
                 form.delete-wird.wird-management-form
                     h3.heading-3.wird-form-head حذف ورد
@@ -69,15 +70,63 @@ block content
                             each wird in user.wirds 
                                 option(value=`${wird._id}`) #{wird.name}##{wird.page}
                     button.btn-fill(type="submit") حذف
+            h2.heading-secondary الورود العامه
+            .wirds-manager-forms.public-wirds-management-forms 
+                form.wird-management-form.create-public-wird-form
+                    h3.heading-3.wird-form-head إنشاء ورد عام
+                    .flex.g18
+                        .input-div 
+                            label.label إسم الورد
+                            input.input(name="name" placeholder="ورد عام" required)
+                        .input-div 
+                            label.label معرَف الورد
+                            input.input(name="uniqueName" placeholder="إسم خاص لا يتكرر (ID)" required)
+                    .flex.g18
+                        .input-div 
+                            label.label الإنجاز اليومي
+                            input.input(name="dailyProgress" type="number" placeholder="كم صفحه تريد يوميًأ؟" required)
+                        .input-div 
+                            label.label عدد المشتركين
+                            input.input(name="maxMembers" type="number" placeholder="الحد الأقصى للمشتركين" required)
+                    .input-div 
+                        label.label الوصف
+                        textarea.input(name="description" type="text" placeholder="وصف الورد، إلام يهدف؟" required)
+                    button.btn-fill(type="submit") إنشاء
+                form.wird-management-form.delete-public-wird-form
+                    h3.heading-3.wird-form-head حذف ورد عام
+                    .input-div 
+                        label.label معرَف الورد
+                        input.input(name="uniqueName" placeholder="إسم خاص لا يتكرر (ID)" required)
+                    button.btn-fill(type="submit") حذف
+                form.wird-management-form.join-public-wird-form
+                    h3.heading-3.wird-form-head دخول ورد عام
+                    .input-div 
+                        label.label معرَف الورد
+                        input.input(name="uniqueName" placeholder="إسم خاص لا يتكرر (ID)" required)
+                    button.btn-fill(type="submit") دخول
 
-        footer.wirds-show 
-            h2.heading-secondary ورودك
-            ul.wirds-list 
-                each wird in user.wirds
-                    li.wirds-list-item 
-                        a.wird-list-item-anchor.btn-outline(href=`/wirds/${wird._id}`)
-                            p.wird-name= wird.name 
-                            p.wird-info صفــ#{wird.page}ــحه آيـــ#{wird.verse}ــه
+            a.btn-fill__2(href="/wirds/public") البحث في الورد العامه &larr;
+
+        .wirds-show-boxes
+            figure.wirds-show 
+                h2.heading-secondary ورودك
+                ul.wirds-list 
+                    each wird in user.wirds
+                        li.wirds-list-item(wird-id=`${wird._id}`)
+                            a.wird-list-item-anchor.btn-outline
+                                p.wird-name= wird.name 
+                                p.wird-info صفــ#{wird.page}ــحه آيـــ#{wird.verse}ــه
+            figure.wirds-show.public-wirds-show
+                h2.heading-secondary ورودك العامه
+                ul.wirds-list 
+                    each wird in userPublicWirds
+                        - const mySub = wird.subscribers.find(sub => sub.user._id.toString() === user._id.toString())
+                        li.wirds-list-item(wird-id=`${wird.uniqueName}`)
+                            a.wird-list-item-anchor.btn-outline(href=`/wirds/public/${wird._id}`)
+                                p.wird-name= wird.name 
+                                p.wird-info صفــ#{mySub.progress.page}ــحه آيـــ#{mySub.progress.verse}ــه
+
+        
 
     section.S-hifz-management 
         // HAF = Hifz Add Form
@@ -98,7 +147,7 @@ block content
             h3.heading-3.hms-head المحفوظات
             main.hms-main
                 each surah in user.hifzProgress 
-                    a.btn-outline.hms-main-surah(href=`/me/hifz/${surah.surah}`)
+                    a.btn-outline.hms-main-surah(href=`/me/hifz/${surah.surah}` surah=`${surah.surah}`)
                         p.hms-main-surah-name= surahs.data.find(fullSurah => fullSurah.number === surah.surah).name
                         p.hms-main-surah-verses  آيــ#{surah.verses.length}ــات
 
@@ -128,7 +177,7 @@ block content
                 .wtl-container 
                     h3.heading-3.wtl-head المهمات
                     ul.wtl 
-                        each task in tasks.filter(task => task.status === 'assigned')
+                        each task in tasks.filter(task => task.status !== 'done')
                             li.wtl-item 
                                 .flex.flex-just-sb
                                     p.wtl-item-head= task.title
@@ -145,12 +194,12 @@ block content
                     main.watwf-main
                         form.flex.flex-just-sb#watwf-add 
                             select.input(id="add-worker-to-work-in" name="task")
-                                each task in tasks 
+                                each task in tasks.filter(task => task.status !== 'done')
                                     option(value=`${task._id}`)= task.title
                             button.btn-fill(type="submit") بدء
                         form.flex.flex-just-sb#watwf-stop 
                             select.input(id="stop-worker-to-work-in" name="task")
-                                each task in tasks 
+                                each task in tasks.filter(task => task.status !== 'done')
                                     option(value=`${task._id}`)= task.title
                             button.btn-fill(type="submit") إنهاء
 
@@ -198,3 +247,20 @@ block content
                                 each task in tasks
                                     option(value=`${task._id}`)= task.title
                         button.btn-fill(type="submit") حذف
+                    form.acp-form.add-roles-form 
+                        h3.heading-3.task-form-head إضافة رتب
+                        .input-div
+                            label.label(for="username") إسم المستخدم
+                            input.input(id="username", name="username" required)
+                        .input-div
+                            label.label(for="roles") الرتب
+                            input.input(id="roles", name="roles", placeholder="worker, admin, user, mohaffiz", required)
+                        button.btn-fill(type="submit") إضافه
+                    form.acp-form.mark-task-done-form 
+                        h3.heading-3.task-form-head إنهاء مهمه
+                        .input-div
+                            label.label(for="task") المهمه
+                            select.input(id="task", name="taskId")
+                                each task in tasks
+                                    option(value=`${task._id}`)= task.title
+                        button.btn-fill(type="submit") إنهاء

@@ -4,6 +4,11 @@ const completionRangeContainers = document.querySelectorAll(
 );
 const mainNavEl = document.querySelector('.main-nav');
 const mainNavLogoutButton = document.querySelector('#main-nav-logout-button');
+const forms = document.querySelectorAll('form');
+
+forms.forEach((form) =>
+  form.addEventListener('submit', (e) => e.preventDefault())
+);
 
 // Timeouts
 setTimeout(() => mainNavEl.classList.add('main-nav-hidden'), 2500);
@@ -50,6 +55,16 @@ class DialogBox {
     this.element.remove();
   }
 }
+
+// Telling user about cookies
+(function () {
+  if (localStorage.getItem('acceptedCookies')) return;
+  new DialogBox(
+    'By proceeding into this website, you accept that this webpage is using cookies',
+    'بإكمالك إلى هذه الصفحه أنت توافق أن الصفحه تستخدم الكوكيز'
+  ).prompt();
+  localStorage.setItem('acceptedCookies', 'true');
+})();
 
 // Event Handlers
 completionRangeContainers?.forEach((completionRangeContainer) => {

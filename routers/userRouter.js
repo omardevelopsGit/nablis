@@ -9,7 +9,10 @@ router.use('/me', authController.protect, meRouter);
 
 router.route('/signup').post(authController.signup);
 router.route('/login').post(authController.login);
-router.route('/logout').post(authController.logout);
+router.route('/logout').post(authController.protect, authController.logout);
+router
+  .route('/:username/roles')
+  .post(authController.protect, authController.addRoles);
 
 router
   .route('/hifz/:user/:surah')

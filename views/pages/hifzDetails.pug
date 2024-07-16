@@ -1,0 +1,28 @@
+extends ../base 
+
+block content 
+    link(rel="stylesheet", href="/styles/pages/hifzDetails.css")
+    script(src="/script/hifzDetails.js" defer) 
+    section.S-surah-verses.S-surah-verses-hidden
+        h2.heading-secondary الآيات
+        main.surah-verses-main
+            each verse, i in surah.verses
+                span.surah-verse-number #{verse}#{i===surah.verses.length-1 ?  '.' : '،'}
+    section.S-hifz-details 
+        h1.heading-secondary.hifz-details-head تفاصيل حفظك لِـ#{surah.name}
+        main.hifz-details-main 
+            //- HDF = Hifz Details Figure
+            a.hdf#hdf-verses-num-btn
+                p.hdf-head عدد الآيات
+                p.hdf-body= surah.verses.length
+            figure.hdf
+                p.hdf-head رقم السوره
+                p.hdf-body= surah.surah
+            figure.hdf
+                p.hdf-head موثقه
+                p.hdf-body= surah.mohaffizVerified ?  "نعم" : "لا"
+            figure.hdf
+                p.hdf-head نوع السوره
+                p.hdf-body= surah.fullSurah.revelationType === 'Medinan' ?  "مدنيه" : "مكيه"
+
+        p.hifz-details-main-note ملاحظه: إضغظ على عدد الآيات أو أبقي الماوس فوقها لترى الآيات المحفوظه

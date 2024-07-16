@@ -1,0 +1,248 @@
+.main {
+  margin: 2rem 2.8rem 2.8rem 2.8rem;
+  position: relative;
+}
+
+.S-hero {
+  height: 80vh;
+  background-image: url('../../img/quran-4.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  overflow: hidden;
+}
+
+.S-hero * {
+  color: #fff;
+}
+
+.S-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom left,
+    rgba(49, 111, 93, 0.786),
+    rgba(49, 111, 93, 0.473)
+  ); /* Black with 50% opacity */
+  z-index: 1;
+}
+
+.hero-main {
+  position: relative;
+  z-index: 2; /* Ensure content is above the overlay */
+  padding: 2.4rem 4.8rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.hero-main .btn-fill__2 {
+  border-radius: 111px;
+  position: absolute;
+  bottom: 4rem;
+  right: 50%;
+  transform: translateX(50%);
+  width: 95%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-main .btn-fill__2:hover {
+  transform: translate(50%, -4%);
+}
+
+.wirds-nav {
+  position: absolute;
+  bottom: 4rem;
+  z-index: 10;
+  width: 96.35%;
+  right: 50%;
+  transform: translateX(50%);
+  background: linear-gradient(
+    to bottom left,
+    rgba(49, 111, 93, 0.473),
+    rgba(49, 111, 93, 0.888)
+  );
+  padding: 1.8rem 2.4rem;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.wirds-nav .input {
+  background-color: #ffffff88;
+}
+
+.S-public-wirds {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3.6rem;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2.4rem 4.8rem;
+  width: 100%;
+}
+
+.wil {
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  align-items: center;
+  justify-items: center;
+}
+
+ul.wil li.wil-li:last-child {
+  grid-column: 1 / -1;
+}
+
+.wil-li {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.4rem;
+}
+
+.wil-li ion-icon {
+  font-size: 3rem;
+  color: #099268;
+}
+
+.wird-card-toDay-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 70%;
+  border-radius: 50000px;
+  border-top: 7px solid #099268;
+  border-bottom: 7px solid #099268;
+  border-left: 3.5px solid #0c8599;
+  border-right: 3.5px solid #0c8599;
+  box-shadow: 0 0 20px 5px rgba(9, 146, 105, 0.1);
+  transition: all 300ms;
+}
+.wird-card-toDay-progress:hover {
+  transform: translateY(2%) scale(0.998);
+  box-shadow: 0 0 20px 15px rgba(9, 146, 105, 0.1);
+}
+
+.dailyGoal-text {
+  font-size: 12rem;
+  display: inline-block;
+  background: linear-gradient(
+    to top right,
+    #99e9f2,
+    #0c8599,
+    #099268,
+    #20c997,
+    #96f2d7
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.wird-card-name {
+  font-size: 4.8rem;
+  display: inline-block;
+  background: linear-gradient(
+    to top right,
+    #99e9f2,
+    #0c8599,
+    #099268,
+    #20c997,
+    #96f2d7
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.wird-card-headings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.wird-card-border {
+  content: '';
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+  background: linear-gradient(
+    to bottom right,
+    #099268,
+    #0c8599,
+    #71d0e0,
+    #20c997
+  );
+  width: 107%;
+  height: 105%;
+  z-index: -1;
+  border-radius: 7px;
+  transition: all 300ms;
+}
+
+.wird-card-border button,
+.wird-card-border a {
+  margin: 0 2.4rem;
+}
+
+.wird-card:hover .wird-card-border {
+  transform: translate(50%);
+  z-index: 1;
+  width: 90%;
+  height: 90%;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1.8rem;
+}
+
+.wird-card:hover .wird-card-border button,
+.wird-card:hover .wird-card-border a {
+  display: block;
+}
+
+.wird-card .wird-card-border button,
+.wird-card .wird-card-border a {
+  display: none;
+}
+
+.wird-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  padding: 2.4rem 3.2rem;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: all 300ms;
+}

@@ -79,7 +79,6 @@ const userSchema = new mongoose.Schema({
             }, // قل عسى أن يكون قريبا
             message: 'يرجى تزويد رقم آيه صحيح، لأنه غير موجود بهذه السوره',
           },
-          unique: false,
         },
       ],
       mohaffizVerified: { type: Boolean, default: false },

@@ -109,6 +109,7 @@
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2.4rem;
 }
 .wirds-manager * {
@@ -154,7 +155,7 @@
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   padding: 2.4rem 0;
-  width: 30%;
+  width: 100%;
   transition: all 300ms;
 
   display: flex;
@@ -192,6 +193,21 @@
 
 .wird-list-item-anchor .wird-name {
   color: #000;
+}
+
+.public-wirds-show .heading-secondary {
+  font-size: 6.4rem;
+}
+
+.wirds-show-boxes {
+  display: flex;
+  gap: 3.2rem;
+
+  width: 60%;
+}
+
+.join-public-wird-form {
+  border: none !important;
 }
 
 /* Hifz Management */
@@ -249,6 +265,7 @@
 .hms-main {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   overflow: auto;
   height: 20rem;
 }
@@ -437,6 +454,7 @@
 
 .acp form {
   width: 100%;
+  height: 100%;
   padding: 1rem 1.8rem;
   background-color: rgba(255, 255, 255, 0.937);
   border-radius: 7px;
@@ -446,13 +464,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  justify-content: center;
 }
 .acp form:hover {
   z-index: 100;
-}
-
-.delete-task-form {
-  grid-column: -1 / 1;
 }
 
 .create-task-form:hover {
@@ -464,7 +479,18 @@
 }
 
 .delete-task-form:hover {
+  transform: translate(-20%, -20%) scale(1.2);
+}
+
+.add-roles-form:hover {
+  transform: translate(20%, -20%) scale(1.2);
+}
+.mark-task-done-form:hover {
   transform: translateY(-28%) scale(1.1);
+}
+
+.mark-task-done-form {
+  grid-column: 1 / -1;
 }
 
 /* وما كان منتصرا هنالك الولاية لله الحق */

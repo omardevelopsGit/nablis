@@ -9,6 +9,18 @@ router
   .get(wirdController.getMyWirds);
 
 router
+  .route('/public')
+  .get(wirdController.getPublicWirds)
+  .post(wirdController.createPublicWird);
+
+router
+  .route('/public/:id')
+  .get(wirdController.getPublicWird)
+  .delete(wirdController.deletePublicWirds)
+  .put(wirdController.toggleSubsToAPublicWird)
+  .post(wirdController.joinPublicWird);
+
+router
   .route('/:id')
   .get(wirdController.getWird)
   .put(wirdController.saveWird)

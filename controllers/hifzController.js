@@ -22,7 +22,9 @@ exports.addToProgress = catchAsync(async (req, res, next) => {
   else
     user.hifzProgress.map((surah) => {
       if (surah.surah === req.body.surah) {
-        const verses = new Set([...req.body.verses, ...surah.verses]); // To avoid multiple verses in the same surah validation error
+        const verses = Array.from(
+          new Set([...req.body.verses, ...surah.verses])
+        ); // To avoid multiple verses in the same surah validation error
         surah.verses = verses;
       }
       return surah;

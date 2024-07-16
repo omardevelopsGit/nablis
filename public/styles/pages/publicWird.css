@@ -1,0 +1,203 @@
+.wird-main-info {
+  height: 95vh;
+  margin: 1.8rem;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2.4rem;
+}
+
+.wird-main-info-piece {
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  transition: all 300ms;
+}
+.wird-main-info-piece:hover {
+  transform: scale(1.03);
+}
+
+.S-basic-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 3.6rem 0;
+}
+
+.basic-info-dailyGoal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 80%;
+  border-radius: 50000px;
+  border-top: 7px solid #099268;
+  border-bottom: 7px solid #099268;
+  border-left: 3.5px solid #0c8599;
+  border-right: 3.5px solid #0c8599;
+  box-shadow: 0 0 20px 5px rgba(9, 146, 105, 0.1);
+  transition: all 300ms;
+}
+.basic-info-dailyGoal:hover {
+  transform: translateY(2%) scale(0.998);
+  box-shadow: 0 0 20px 15px rgba(9, 146, 105, 0.1);
+}
+
+.dailyGoal-text {
+  font-size: 20rem;
+  display: inline-block;
+  background: linear-gradient(
+    to top right,
+    #99e9f2,
+    #0c8599,
+    #099268,
+    #20c997,
+    #96f2d7
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.bid {
+  padding: 0 2rem;
+  align-self: flex-start;
+}
+
+.bid-text {
+  font-size: 1.8rem;
+}
+
+.S-basic-info.wird-main-info-piece .heading-3 {
+  font-size: 3rem;
+}
+
+/* Complex Info */
+
+.S-complex-info {
+  padding: 0 3.6rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+}
+.S-complex-info section {
+  margin-bottom: 0 !important;
+}
+
+.complex-info-headings {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cig {
+  display: flex;
+  gap: 2.4rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.wird-dailyProgress {
+  font-size: 1.8rem;
+  color: #555;
+}
+
+.cig-figure {
+  font-size: 1.8rem;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 1.8rem 2.4rem;
+  transition: all 300ms;
+  color: #099268;
+}
+.cig-figure:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cist {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.st {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+}
+
+.st-headings {
+  font-size: 2.4rem;
+  color: #099268;
+  padding: 1rem 2.4rem;
+  box-shadow: 0 0 15px 5px rgba(9, 146, 105, 0.1);
+  border-radius: 700px;
+
+  display: flex;
+}
+
+.st-headings-border-left {
+  border-left: 2px solid #099268;
+}
+
+.st-head {
+  padding: 0 2.4rem;
+}
+
+.st-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.st-element {
+  font-size: 1.8rem;
+  box-shadow: 0 0 15px 5px rgba(9, 146, 105, 0.1);
+  padding: 1rem 1.8rem;
+  border-radius: 100px;
+  width: 100%;
+
+  display: flex;
+  gap: 3.6rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wird-main-info {
+  margin-bottom: 15rem;
+}
+
+.wap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+}
+
+.wap-add-to-wird-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  background-color: #68e9c213;
+  padding: 2.4rem 3.6rem;
+  border-radius: 7px;
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.1);
+  transition: all 300ms;
+}
+
+.wap-add-to-wird-form:hover {
+  transform: scale(1.03);
+}

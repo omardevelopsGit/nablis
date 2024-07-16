@@ -1,15 +1,54 @@
 'use strict';
 
 const quranLines = document.querySelectorAll('.quran-line-percentage');
-const forms = document.querySelectorAll('form');
+const mePageForms = document.querySelectorAll('form');
+const dataElement = document.querySelector('data');
+
+const createWirdForm = document.querySelector('form.create-wird');
+const editWirdForm = document.querySelector('form.edit-wird');
+const wirdEditInput = document.querySelector('#wird-edit-selection');
+const wirdEditPage = document.querySelector('#edit-wird-pn-in');
+const wirdEditVerse = document.querySelector('#edit-wird-vn-in');
+const wirdsList = document.querySelector('.wirds-list');
+
+const deleteWirdForm = document.querySelector('form.delete-wird');
+const deleteWirdInput = document.querySelector('#delete-wird-in');
+
+const addMeToTaskForm = document.querySelector('#watwf-add');
+const markMeAsDoneWorkingForm = document.querySelector('#watwf-stop');
+
+const addTaskForm = document.querySelector('form.acp-form.create-task-form');
+
+const editTaskForm = document.querySelector('form.acp-form.edit-task-form');
+const taskIdInputEdit = document.querySelector('#acp-edit-form-task');
+
+const deleteTaskForm = document.querySelector('form.acp-form.delete-task-form');
+const addRolesForm = document.querySelector('form.acp-form.add-roles-form');
+const markTaskAsDoneForm = document.querySelector(
+  'form.acp-form.mark-task-done-form'
+);
+
+const hifzAddForm = document.querySelector('.haf');
+const hmsMain = document.querySelector('.hms-main');
+
+const hifzVerificationForm = document.querySelector('.mvf');
+
+const createPublicWirdForm = document.querySelector(
+  'form.wird-management-form.create-public-wird-form'
+);
+const deletePublicWirdForm = document.querySelector(
+  'form.wird-management-form.delete-public-wird-form'
+);
+const joinPublicWirdForm = document.querySelector(
+  'form.wird-management-form.join-public-wird-form'
+);
+const publicWirdsShow = document.querySelector(
+  'figure.wirds-show.public-wirds-show .wirds-list'
+);
 
 quranLines.forEach((e) => {
   e.style.width = `${e.getAttribute('percentage')}%`;
 });
-
-forms.forEach((form) =>
-  form.addEventListener('submit', (e) => e.preventDefault())
-);
 
 // General Functions
 function formToObject(form) {
@@ -36,7 +75,7 @@ function formToObject(form) {
           break;
         default:
           // For other input types, add the value to the object
-          data[element.name] = value;
+          data[element.name] = isNaN(+value) ? value : +value;
       }
     }
   }
@@ -61,292 +100,550 @@ function getRange(start, end) {
   return range;
 }
 
+function removeDisabledBtnCls(form) {
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.classList.remove('disabled-button');
+}
+
+function fillFormFromObject(form, data) {
+  Object.entries(data).forEach(([key, value]) => {
+    const input = form.querySelector(`.input[name="${key}"]`);
+
+    if (input) input.value = value;
+  });
+}
+// Class
+
+class FormHandler {
+  constructor(form, handler, successMsg) {
+    this.form = form;
+    this.handler = handler;
+    this.terminated = true;
+    this.scsMsg = successMsg;
+  }
+
+  terminate() {
+    this.terminated = true;
+  }
+
+  acitvate(url, data) {
+    this.data = Object.assign({}, data);
+    this.url = url;
+    this.terminated = false;
+
+    this.form.addEventListener('submit', async (e) => {
+      if (this.terminated) return removeDisabledBtnCls(this.form);
+
+      try {
+        this.formData = formToObject(this.form);
+
+        if (data.body) data.body = this.data.body(this.formData);
+        if (typeof this.url === 'function') url = this.url(this.formData);
+
+        const response = await fetch(url, data);
+
+        // Catch if the status code of the response is 204
+        let responseBody;
+
+        try {
+          responseBody = await response.json();
+        } catch (e) {
+          responseBody = { status: 'success' };
+        }
+
+        if (responseBody.status !== 'success')
+          throw new Error(responseBody.message);
+        else new DialogBox(this.scsMsg, 'تمت العمليه بنجاح').prompt();
+
+        await this.handler(responseBody, this.formData);
+        removeDisabledBtnCls(this.form);
+        return;
+      } catch (e) {
+        removeDisabledBtnCls(this.form);
+        fillFormFromObject(this.form, this.formData);
+        console.log(e);
+        return new DialogBox(e.message, 'حدث خطأ').prompt();
+      }
+    });
+  }
+}
+
 // Handling Wirds Management features
 
 // Create Wird Form
-const createWirdForm = document.querySelector('form.create-wird');
-
-createWirdForm.addEventListener('submit', async () => {
-  try {
-    const formData = formToObject(createWirdForm);
-
-    const response = await fetch('/api/v1/wirds', {
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(formData),
-      method: 'POST',
-    });
-
-    const body = await response.json();
-
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم إنشاء ورد جديد بنجاح', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
-
-//  Update Wird Form
-const editWirdForm = document.querySelector('form.edit-wird');
-const wirdEditInput = document.querySelector('#wird-edit-selection');
-const wirdEditPage = document.querySelector('#edit-wird-pn-in');
-const wirdEditVerse = document.querySelector('#edit-wird-vn-in');
-
-wirdEditInput.addEventListener('change', async (e) => {
-  e.preventDefault();
-
-  const response = await fetch(`/api/v1/wirds/${wirdEditInput.value.trim()}`);
-
-  const body = await response.json();
-
-  if (body.status !== 'success')
-    return new DialogBox(body.message, 'لم نتمكن من الحصول على معلومات وردك');
-
-  wirdEditPage.value = body.data.wird.page;
-  wirdEditVerse.value = body.data.wird.verse;
-});
-
-editWirdForm.addEventListener('submit', async () => {
-  try {
-    const formData = formToObject(editWirdForm);
-    delete formData?.wird;
-
-    const response = await fetch(
-      `/api/v1/wirds/${wirdEditInput.value.trim()}`,
-      {
+if (createWirdForm) {
+  const createWirdFormHandler = new FormHandler(
+    createWirdForm,
+    async function (body) {
+      // Adding wird to ui
+      // Adding to wirds list
+      const wirdItemResponse = await fetch('/api/v1/pugify/me-wirdListItem', {
         headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(formData),
-        method: 'PUT',
-      }
-    );
+        body: JSON.stringify({ wird: body.data.wird }),
+        method: 'POST',
+      });
 
-    const body = await response.json();
+      const wirdItemBody = await wirdItemResponse.json();
+      if (wirdItemBody.status !== 'success')
+        throw new Error(wirdItemBody.message);
+      const wirdHTML = wirdItemBody.data.html;
 
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم تحديث وردك بنجاح', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      wirdsList.insertAdjacentHTML('afterbegin', wirdHTML);
 
-// Delete Wird Form
-const deleteWirdForm = document.querySelector('form.delete-wird');
-const deleteWirdInput = document.querySelector('#delete-wird-in');
-
-deleteWirdForm.addEventListener('submit', async () => {
-  try {
-    const response = await fetch(
-      `/api/v1/wirds/${deleteWirdInput.value.trim()}`,
-      {
-        method: 'DELETE',
-      }
-    );
-
-    if (!response.ok) new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم حذف وردك بنجاح', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox('حدث خطأ', e.message).prompt();
-  }
-});
-
-// Handling Hifz Forms
-const hifzAddForm = document.querySelector('.haf');
-
-hifzAddForm.addEventListener('submit', async () => {
-  try {
-    const formData = formToObject(hifzAddForm);
-    formData.verses = formData.verses
-      .split(',')
-      .map((verse) => {
-        if (verse.includes('-')) {
-          console.log(verse);
-          const [startingVerse, endingVerse] = verse
-            .split('-')
-            .map((verse) => Number(verse));
-
-          return getRange(startingVerse, endingVerse);
+      // Adding to select inputs in delete and update forms
+      const wirdOptionResponse = await fetch(
+        '/api/v1/pugify/me-wirdOptionItem',
+        {
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({ wird: body.data.wird }),
+          method: 'POST',
         }
-        return Number(verse);
-      })
-      .flat();
+      );
 
-    const response = await fetch(`/api/v1/users/me/hifz`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+      const wirdOptionBody = await wirdOptionResponse.json();
+      if (wirdOptionBody.status !== 'success')
+        throw new Error(wirdOptionBody.message);
+      const wirdOptionHTML = wirdOptionBody.data.html;
 
-    const body = await response.json();
+      [editWirdForm, deleteWirdForm].forEach((form) => {
+        const selectInput = form.querySelector(`select.input`);
+        selectInput.insertAdjacentHTML('afterbegin', wirdOptionHTML);
+      });
+    },
+    'تم إنشاء وردك بنجاح'
+  );
+  createWirdFormHandler.acitvate('/api/v1/wirds', {
+    headers: { 'Content-type': 'application/json' },
+    body(formData) {
+      return JSON.stringify(formData);
+    },
+    method: 'POST',
+  });
+}
 
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم تحديث حفظك بنجاح', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+//  Update Wird Form+
+if (wirdEditInput)
+  wirdEditInput.addEventListener('change', async (e) => {
+    e.preventDefault();
 
-const hifzVerificationForm = document.querySelector('.mvf');
-
-hifzVerificationForm?.addEventListener('submit', async () => {
-  try {
-    const formData = formToObject(hifzVerificationForm);
-
-    const response = await fetch(
-      `/api/v1/users/hifz/${formData.username}/${formData.surah}`,
-      {
-        method: 'PUT',
-      }
-    );
+    const response = await fetch(`/api/v1/wirds/${wirdEditInput.value.trim()}`);
 
     const body = await response.json();
 
     if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم توثيق الحفظ بنجاح', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      return new DialogBox(body.message, 'لم نتمكن من الحصول على معلومات وردك');
+
+    wirdEditPage.value = body.data.wird.page;
+    wirdEditVerse.value = body.data.wird.verse;
+  });
+
+if (editWirdForm) {
+  const editWirdFormHandler = new FormHandler(
+    editWirdForm,
+    async function () {
+      return;
+    },
+    'تم تحديث وردك بنجاح، نرجو إعادة تنشيط الصفحه لإظهار النتائج'
+  );
+  editWirdFormHandler.acitvate(`/api/v1/wirds/${wirdEditInput.value.trim()}`, {
+    headers: { 'Content-type': 'application/json' },
+    body(formData) {
+      return JSON.stringify(formData);
+    },
+    method: 'PUT',
+  });
+}
+// Delete Wird Form
+
+if (deleteWirdForm) {
+  const deleteWirdFormHandler = new FormHandler(
+    deleteWirdForm,
+    async function (body, formData) {
+      // Removing wird li form the ui
+      const wirdsListItem = Array.from(
+        document.querySelectorAll(`.wirds-list-item`)
+      ).find((item) => {
+        return item.getAttribute('wird-id').trim() === formData.wird;
+      });
+      wirdsListItem?.remove();
+
+      // Removing from select input of the forms
+      [editWirdForm, deleteWirdForm].forEach((form) => {
+        const optionItem = form.querySelector(
+          `select.input option[value="${formData.wird}"]`
+        );
+        optionItem?.remove();
+      });
+    },
+    'تم حذف وردك'
+  );
+  deleteWirdFormHandler.acitvate(
+    () => `/api/v1/wirds/${deleteWirdInput.value.trim()}`,
+    { method: 'DELETE' }
+  );
+}
+// Handling Hifz Forms
+if (hifzAddForm) {
+  const hifzAddFormHandler = new FormHandler(
+    hifzAddForm,
+    async function (body, formData) {
+      // Adding surah to ui
+      const fullSurahs = JSON.parse(dataElement.getAttribute('surahs'));
+
+      const surah = body.data.hifzProgress.find((surah) => {
+        return surah.surah === +formData.surah;
+      });
+      surah.name = fullSurahs.data.find(
+        (fullSurah) => fullSurah.number === surah.surah
+      ).name;
+
+      const hifzSurahAnchorRes = await fetch(
+        '/api/v1/pugify/me-hifzSurahAnchor',
+        {
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({
+            surah,
+          }),
+          method: 'POST',
+        }
+      );
+
+      const hifzSurahAnchorBody = await hifzSurahAnchorRes.json();
+      if (hifzSurahAnchorBody.status !== 'success')
+        throw new Error(hifzSurahAnchorBody.message);
+      const hifzHTML = hifzSurahAnchorBody.data.html;
+
+      // Removing the old one if exists
+      Array.from(hmsMain.querySelectorAll(`.hms-main-surah`))
+        ?.find((el) => +el.getAttribute('surah') === surah.surah)
+        ?.remove();
+
+      hmsMain.insertAdjacentHTML('afterbegin', hifzHTML);
+    },
+    'تم إضافة السوره الى حفظك'
+  );
+  hifzAddFormHandler.acitvate(`/api/v1/users/me/hifz`, {
+    headers: { 'Content-type': 'application/json' },
+    body(formData) {
+      formData.verses = formData.verses
+        .split(',')
+        .map((verse) => {
+          if (verse.includes('-')) {
+            const [startingVerse, endingVerse] = verse
+              .split('-')
+              .map((verse) => Number(verse));
+
+            return getRange(startingVerse, endingVerse);
+          }
+          return Number(verse);
+        })
+        .flat();
+
+      formData.surah = +formData.surah;
+
+      return JSON.stringify(formData);
+    },
+    method: 'PUT',
+  });
+}
+
+if (hifzVerificationForm) {
+  const hifzVerificationFormHandler = new FormHandler(
+    hifzVerificationForm,
+    async function (body, formData) {},
+    'تم توثيق الحفظ'
+  );
+  hifzVerificationFormHandler.acitvate(
+    (formData) => `/api/v1/users/hifz/${formData.username}/${formData.surah}`,
+    { method: 'PUT' }
+  );
+}
 
 // Tasks
-const addMeToTaskForm = document.querySelector('#watwf-add');
-const markMeAsDoneWorkingForm = document.querySelector('#watwf-stop');
 
-addMeToTaskForm?.addEventListener('submit', async (e) => {
-  try {
-    const formData = formToObject(addMeToTaskForm);
+if (addMeToTaskForm)
+  addMeToTaskForm?.addEventListener('submit', async (e) => {
+    try {
+      const formData = formToObject(addMeToTaskForm);
 
-    const response = await fetch(`/api/v1/tasks/${formData.task}/me`, {
-      method: 'POST',
-    });
+      const response = await fetch(`/api/v1/tasks/${formData.task}/me`, {
+        method: 'POST',
+      });
 
-    const body = await response.json();
+      const body = await response.json();
 
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else
-      new DialogBox(
-        'تمت إضافتك إلى المهمه بنجاح',
-        'تمت العمليه بنجاح'
-      ).prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      removeDisabledBtnCls(addMeToTaskForm);
+      if (body.status !== 'success')
+        new DialogBox(body.message, 'حدث خطأ').prompt();
+      else
+        new DialogBox(
+          'تمت إضافتك إلى المهمه بنجاح',
+          'تمت العمليه بنجاح'
+        ).prompt();
+    } catch (e) {
+      new DialogBox(e.message, 'حدث خطأ').prompt();
+    }
+  });
 
-markMeAsDoneWorkingForm?.addEventListener('submit', async (e) => {
-  try {
-    const formData = formToObject(markMeAsDoneWorkingForm);
+if (markMeAsDoneWorkingForm)
+  markMeAsDoneWorkingForm?.addEventListener('submit', async (e) => {
+    try {
+      const formData = formToObject(markMeAsDoneWorkingForm);
 
-    const response = await fetch(`/api/v1/tasks/${formData.task}/me`, {
-      method: 'PUT',
-    });
+      const response = await fetch(`/api/v1/tasks/${formData.task}/me`, {
+        method: 'PUT',
+      });
 
-    const body = await response.json();
+      const body = await response.json();
 
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else
-      new DialogBox(
-        'تم إنهاء عملك بالمهمه بنجاح',
-        'تمت العمليه بنجاح'
-      ).prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      if (body.status !== 'success')
+        new DialogBox(body.message, 'حدث خطأ').prompt();
+      else
+        new DialogBox(
+          'تم إنهاء عملك بالمهمه بنجاح',
+          'تمت العمليه بنجاح'
+        ).prompt();
+      removeDisabledBtnCls(markMeAsDoneWorkingForm);
+    } catch (e) {
+      new DialogBox(e.message, 'حدث خطأ').prompt();
+    }
+  });
 
 // Administrator
 //  Add Task Form
-const addTaskForm = document.querySelector('form.acp-form.create-task-form');
 
-addTaskForm.addEventListener('submit', async (e) => {
-  try {
-    const formData = formToObject(addTaskForm);
-    formData.assignedTo = formData.assignedTo.split(',').map((i) => i.trim());
+if (addTaskForm)
+  addTaskForm?.addEventListener('submit', async (e) => {
+    try {
+      const formData = formToObject(addTaskForm);
+      formData.assignedTo = formData.assignedTo.split(',').map((i) => i.trim());
 
-    const response = await fetch(`/api/v1/tasks/`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+      const response = await fetch(`/api/v1/tasks/`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    const body = await response.json();
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم إنشاء المهمه', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      const body = await response.json();
+      removeDisabledBtnCls(addTaskForm);
+      if (body.status !== 'success')
+        new DialogBox(body.message, 'حدث خطأ').prompt();
+      else new DialogBox('تم إنشاء المهمه', 'تمت العمليه بنجاح').prompt();
+    } catch (e) {
+      new DialogBox(e.message, 'حدث خطأ').prompt();
+    }
+  });
 
 // Edit Task Form
-const editTaskForm = document.querySelector('form.acp-form.edit-task-form');
-const taskIdInputEdit = document.querySelector('#acp-edit-form-task');
 
-editTaskForm.addEventListener('submit', async (e) => {
-  try {
-    const formData = formToObject(editTaskForm);
-    formData.assignedTo = formData.assignedTo.split(',').map((i) => i.trim());
+if (editTaskForm)
+  editTaskForm?.addEventListener('submit', async (e) => {
+    try {
+      const formData = formToObject(editTaskForm);
+      formData.assignedTo = formData.assignedTo.split(',').map((i) => i.trim());
 
-    const response = await fetch(`/api/v1/tasks/${formData.taskId}`, {
-      method: 'PUT',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+      const response = await fetch(`/api/v1/tasks/${formData.taskId}`, {
+        method: 'PUT',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    const body = await response.json();
-    if (body.status !== 'success')
-      new DialogBox(body.message, 'حدث خطأ').prompt();
-    else new DialogBox('تم تحديث المهمه', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
-});
+      const body = await response.json();
+      removeDisabledBtnCls(editTaskForm);
+      if (body.status !== 'success')
+        new DialogBox(body.message, 'حدث خطأ').prompt();
+      else new DialogBox('تم تحديث المهمه', 'تمت العمليه بنجاح').prompt();
+    } catch (e) {
+      new DialogBox(e.message, 'حدث خطأ').prompt();
+    }
+  });
 
-taskIdInputEdit.addEventListener('change', async (e) => {
-  try {
-    const response = await fetch(`/api/v1/tasks/${taskIdInputEdit.value}`);
+if (taskIdInputEdit)
+  taskIdInputEdit?.addEventListener('change', async (e) => {
+    try {
+      const response = await fetch(`/api/v1/tasks/${taskIdInputEdit.value}`);
 
-    const body = await response.json();
-    console.log(body);
+      const body = await response.json();
+      console.log(body);
 
-    if (body.status !== 'success') throw new Error(body.message);
+      if (body.status !== 'success') throw new Error(body.message);
 
-    Object.keys(body.data.task).forEach((key) => {
-      const element = editTaskForm.querySelector(`.input[name="${key}"]`);
-      if (!element) return;
-      element.value = body.data.task[key];
-    });
+      Object.keys(body.data.task).forEach((key) => {
+        const element = editTaskForm.querySelector(`.input[name="${key}"]`);
+        if (!element) return;
+        element.value = body.data.task[key];
+      });
 
-    editTaskForm.querySelector('input[name="assignedTo"]').value =
-      body.data.task.assignedTo.map((user) => user.username).join(', ');
-  } catch (e) {
-    return new DialogBox(
-      e.message,
-      'لم نتمكن من ايجاد معلومات المهمه'
-    ).prompt();
-  }
-});
+      editTaskForm.querySelector('input[name="assignedTo"]').value =
+        body.data.task.assignedTo.map((user) => user.username).join(', ');
+    } catch (e) {
+      return new DialogBox(
+        e.message,
+        'لم نتمكن من ايجاد معلومات المهمه'
+      ).prompt();
+    }
+  });
 
 // Delete Task Form
-const deleteTaskForm = document.querySelector('form.acp-form.delete-task-form');
 
-deleteTaskForm.addEventListener('submit', async (e) => {
-  try {
-    const formData = formToObject(deleteTaskForm);
+if (deleteTaskForm)
+  deleteTaskForm?.addEventListener('submit', async (e) => {
+    try {
+      const formData = formToObject(deleteTaskForm);
 
-    const response = await fetch(`/api/v1/tasks/${formData.taskId}`, {
+      const response = await fetch(`/api/v1/tasks/${formData.taskId}`, {
+        method: 'DELETE',
+      });
+
+      removeDisabledBtnCls(deleteTaskForm);
+
+      if (!response.ok) throw new Error('غير معروف');
+      else new DialogBox('تم حذف المهمه', 'تمت العمليه بنجاح').prompt();
+    } catch (e) {
+      new DialogBox(e.message, 'حدث خطأ').prompt();
+    }
+  });
+
+if (addRolesForm) {
+  const addRolesFormHandler = new FormHandler(
+    addRolesForm,
+    function () {},
+    'تم إضافة رتب'
+  );
+  addRolesFormHandler.acitvate(
+    (formData) => `/api/v1/users/${formData.username}/roles`,
+    {
+      method: 'POST',
+      body: (formData) => {
+        return JSON.stringify({
+          roles: formData.roles.split(',').map((role) => role.trim()),
+        });
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+}
+
+if (markTaskAsDoneForm) {
+  const markTaskAsDoneFormHandler = new FormHandler(
+    markTaskAsDoneForm,
+    async function () {},
+    'تم إنهاء المهمه (وضع عليها علامه كمنتهيه)'
+  );
+  markTaskAsDoneFormHandler.acitvate(
+    (formData) => `/api/v1/tasks/${formData.taskId}`,
+    {
+      method: 'POST',
+    }
+  );
+}
+
+if (createPublicWirdForm) {
+  const createPublicWirdFormHandler = new FormHandler(
+    createPublicWirdForm,
+    async function (body, formData) {
+      body.data.user = JSON.parse(dataElement.getAttribute('user'));
+      const response = await fetch(`/api/v1/pugify/me-publicWirdLI`, {
+        method: 'POST',
+        body: JSON.stringify(body.data),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      const wirdLIBody = await response.json();
+
+      console.log(wirdLIBody);
+      if (wirdLIBody.status !== 'success')
+        return new DialogBox(
+          'يمكنك إعادة تشغيل الصفحه لرؤية الورد',
+          'لم نتمكن من إضافة الورد إلى الورود'
+        ).prompt();
+
+      publicWirdsShow.insertAdjacentHTML('afterbegin', wirdLIBody.data.html);
+    },
+    'تم إنشاء ورد عام'
+  );
+  createPublicWirdFormHandler.acitvate('/api/v1/wirds/public', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body(formData) {
+      return JSON.stringify(formData);
+    },
+  });
+}
+
+if (joinPublicWirdForm) {
+  const joinPublicWirdFormHandler = new FormHandler(
+    joinPublicWirdForm,
+    async function (body, formData) {
+      body.data.user = JSON.parse(dataElement.getAttribute('user'));
+      const response = await fetch(`/api/v1/pugify/me-publicWirdLI`, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...body.data,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+
+      const wirdLIBody = await response.json();
+
+      if (wirdLIBody.status !== 'success')
+        return new DialogBox(
+          'يمكنك إعادة تشغيل الصفحه لرؤية الورد',
+          'لم نتمكن من إضافة الورد إلى الورود'
+        ).prompt();
+
+      publicWirdsShow.insertAdjacentHTML('afterbegin', wirdLIBody.data.html);
+    },
+    'تم إدخالك إلى ورد عام'
+  );
+  joinPublicWirdFormHandler.acitvate(
+    (formData) => `/api/v1/wirds/public/${formData.uniqueName}`,
+    {
+      method: 'POST',
+    }
+  );
+}
+
+if (deletePublicWirdForm) {
+  const deletePublicWirdFormHandler = new FormHandler(
+    deletePublicWirdForm,
+    async function (body, formData) {
+      publicWirdsShow
+        .querySelector(`li.wirds-list-item[wird-id="${formData.uniqueName}"]`)
+        .remove();
+    },
+    'تم حذف الورد بنجاح'
+  );
+  deletePublicWirdFormHandler.acitvate(
+    (formData) => {
+      return `/api/v1/wirds/public/${formData.uniqueName}`;
+    },
+    {
       method: 'DELETE',
+    }
+  );
+}
+
+//
+//
+//
+//
+// Nothing must be after this handler
+mePageForms.forEach((form) => {
+  form.addEventListener('submit', async (e) => {
+    const inputs = form.querySelectorAll('.input');
+    inputs.forEach((input) => {
+      input.value = '';
     });
 
-    if (!response.ok) new DialogBox('عير معروف', 'حدث خطأ').prompt();
-    else new DialogBox('تم حذف المهمه', 'تمت العمليه بنجاح').prompt();
-  } catch (e) {
-    new DialogBox(e.message, 'حدث خطأ').prompt();
-  }
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.classList.add('disabled-button');
+  });
 });
