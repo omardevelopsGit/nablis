@@ -369,6 +369,28 @@ button {
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.2);
   z-index: 99999999999;
   width: 50%;
+  animation: dialog-popup 450ms 1 forwards;
+  transition: all 450ms;
+}
+.main-dialog-before-hide {
+  animation: dialog-hide 450ms 1 forwards;
+}
+@keyframes dialog-hide {
+  0% {
+    transform: translate(50%, -50%);
+  }
+  100% {
+    transform: translate(-600%, -50%);
+  }
+}
+@keyframes dialog-popup {
+  0% {
+    transform: translate(-600%, -50%);
+  }
+
+  100% {
+    transform: translate(50%, -50%);
+  }
 }
 
 .main-dialog-head {

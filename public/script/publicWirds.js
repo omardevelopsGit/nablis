@@ -37,7 +37,6 @@ joinPublicWirdButton.forEach((btn) => {
     }
   });
 });
-e;
 
 pageInput.addEventListener('change', async (e) => {
   try {

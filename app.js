@@ -16,6 +16,7 @@ const viewsRouter = require('./routers/viewsRouter.js');
 const pugRouter = require('./routers/pugRouter.js');
 const authController = require('./controllers/authController.js');
 const xss = require('xss-clean');
+const catchAsync = require('./utils/catchAsync.js');
 
 const app = express();
 

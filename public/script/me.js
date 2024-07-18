@@ -102,6 +102,7 @@ function getRange(start, end) {
 
 function removeDisabledBtnCls(form) {
   const submitButton = form.querySelector('button[type="submit"]');
+  console.log(submitButton);
   submitButton.classList.remove('disabled-button');
 }
 
@@ -161,7 +162,6 @@ class FormHandler {
       } catch (e) {
         removeDisabledBtnCls(this.form);
         fillFormFromObject(this.form, this.formData);
-        console.log(e);
         return new DialogBox(e.message, 'حدث خطأ').prompt();
       }
     });
@@ -325,7 +325,8 @@ if (hifzAddForm) {
   hifzAddFormHandler.acitvate(`/api/v1/users/me/hifz`, {
     headers: { 'Content-type': 'application/json' },
     body(formData) {
-      formData.verses = formData.verses
+      console.log(formData);
+      formData.verses = `${formData.verses}`
         .split(',')
         .map((verse) => {
           if (verse.includes('-')) {

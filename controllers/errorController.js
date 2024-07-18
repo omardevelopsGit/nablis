@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError.js');
 
 const handleCastErrorDB = (err) => {
-  const message = `Invalid ${err.path}: ${err.value}`;
+  const message = `أنت تحاول البحث عن ملف غير موجود، تفاصيل: الـ${err.path} بقيمة: ${err.value} غير موجود`;
 
   return new AppError(message, 400);
 };
@@ -50,19 +50,23 @@ const sendDevError = (err, res, req) => {
       .render('pages/error.pug', { title: 'حدث خطأ', err });
 };
 
-const sendProdError = (err, res) => {
+const sendProdError = (err, res, req) => {
   if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
+    if (req.originalUrl.startsWith('/api'))
+      res.status(500).json({
+        status: err.status,
+        message: err.message,
+      });
+    else res.status(500).render('pages/error.pug', { err });
   } else {
     console.error(`Error occured`);
     console.error(err);
-    res.status(500).json({
-      status: 'error',
-      message: 'حدث خطأ في هذه العمليه',
-    });
+    if (req.originalUrl.startsWith('/api'))
+      res.status(500).json({
+        status: 'error',
+        message: 'حدث خطأ في هذه العمليه',
+      });
+    else res.status(500).render('pages/error.pug', { err });
   }
 };
 
@@ -75,7 +79,8 @@ const errorController = function (err, req, res, next) {
   if (nodeEnv === 'development') {
     sendDevError(err, res, req);
   } else if (nodeEnv === 'production') {
-    let error = err;
+    let error = { ...err };
+    error.message = err.message;
 
     if (err.name === 'CastError') error = handleCastErrorDB(err);
     if (err.name === 'ValidationError') error = handleVaildationErrorDB(err);

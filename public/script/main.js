@@ -45,7 +45,12 @@ class DialogBox {
 
       element
         .querySelector('.main-dialog-btn')
-        .addEventListener('click', () => element.remove());
+        .addEventListener('click', () => {
+          element.classList.add('main-dialog-before-hide');
+          setTimeout(() => {
+            element.remove();
+          }, 450); // Animation duration
+        });
     } catch (e) {
       console.log(e);
     }
